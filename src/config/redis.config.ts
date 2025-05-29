@@ -14,6 +14,9 @@ export const CACHE_KEYS = {
   SEARCH_RESULTS: 'properties:search',
 };
 
+// Debug: Log Redis URL
+console.log('Redis URL:', process.env.REDIS_URL || 'Not set');
+
 // Create Redis client
 const redisClient = new Redis(process.env.REDIS_URL || 'redis://localhost:6379', {
   retryStrategy: (times: number) => {

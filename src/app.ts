@@ -12,6 +12,14 @@ import recommendationRoutes from './routes/recommendation.routes';
 // Load environment variables
 dotenv.config();
 
+// Debug: Log environment variables
+console.log('Environment:', {
+  NODE_ENV: process.env.NODE_ENV,
+  MONGODB_URI: process.env.MONGODB_URI || 'Not set',
+  REDIS_URL: process.env.REDIS_URL || 'Not set',
+  PORT: process.env.PORT || '3000'
+});
+
 // Create Express app
 const app: Express = express();
 
@@ -43,7 +51,10 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 // Database connection
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI as string);
+    if (!process.env.MONGODB_URI) {
+      throw new Error('MONGODB_URI environment variable is not set');
+    }
+    const conn = await mongoose.connect(process.env.MONGODB_URI);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
