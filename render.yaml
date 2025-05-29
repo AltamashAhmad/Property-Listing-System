@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: property-listing-system
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: PORT
+        value: 3000
+
+databases:
+  - name: property-listing-mongodb
+    databaseName: property-listing
+    plan: free
+    ipAllowList: [] 
