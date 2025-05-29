@@ -1,0 +1,848 @@
+{
+	"info": {
+		"_postman_id": "random-uuid",
+		"name": "Property Listing API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Alice Johnson\",\n    \"email\": \"alice@example.com\",\n    \"password\": \"securepass123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/register",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "auth", "register"]
+						},
+						"description": "Register a new user"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"alice@example.com\",\n    \"password\": \"securepass123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/login",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "auth", "login"]
+						},
+						"description": "Login with existing user credentials"
+					},
+					"response": []
+				},
+				{
+					"name": "Register User (Invalid Email)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Invalid User\",\n    \"email\": \"invalid-email\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/register",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "auth", "register"]
+						},
+						"description": "Try to register with invalid email format"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User (Wrong Password)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"alice@example.com\",\n    \"password\": \"wrongpassword\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/login",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "auth", "login"]
+						},
+						"description": "Try to login with wrong password"
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication related endpoints"
+		},
+		{
+			"name": "Properties",
+			"item": [
+				{
+					"name": "Create Property",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzU0MjZhNmQ5MDNmZmE5MTEwYzFjYiIsImlhdCI6MTc0ODQ5MjI3OCwiZXhwIjoxNzUxMDg0Mjc4fQ.AlH3DgMkVyU8JLEvM9xd_o2TEBBs8qZth8X50qxrHKY"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"PROP3001\",\n  \"title\": \"Luxury Apartment in Mumbai\",\n  \"type\": \"Apartment\",\n  \"price\": 12500000,\n  \"state\": \"Maharashtra\",\n  \"city\": \"Mumbai\",\n  \"areaSqFt\": 1200,\n  \"bedrooms\": 3,\n  \"bathrooms\": 2,\n  \"amenities\": [\"Gym\", \"Pool\", \"Power Backup\", \"Security\"],\n  \"tags\": [\"Sea View\", \"Near Metro\", \"Luxury\"],\n  \"furnished\": \"Furnished\",\n  \"isVerified\": true,\n  \"listingType\": \"sale\",\n  \"rating\": 4.5,\n  \"colorTheme\": \"#FF5733\",\n  \"availableFrom\": \"2024-06-01\",\n  \"listedBy\": \"Owner\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/properties",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties"]
+						},
+						"description": "Create a new property (requires JWT token)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Properties (Basic)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/properties",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties"]
+						},
+						"description": "Get all properties without any filters (default pagination: page=1, limit=10)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Properties (With Pagination)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/properties?page=1&limit=5",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties"],
+							"query": [
+								{"key": "page", "value": "1"},
+								{"key": "limit", "value": "5"}
+							]
+						},
+						"description": "Get properties with custom pagination settings"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Properties (Price Filter)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/properties?priceMin=10000000&priceMax=20000000",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties"],
+							"query": [
+								{"key": "priceMin", "value": "10000000"},
+								{"key": "priceMax", "value": "20000000"}
+							]
+						},
+						"description": "Get properties filtered by price range (1-2 Crore)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Properties (Location Filter - Mumbai)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/properties?city=Mumbai&state=Maharashtra",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties"],
+							"query": [
+								{"key": "city", "value": "Mumbai"},
+								{"key": "state", "value": "Maharashtra"}
+							]
+						},
+						"description": "Get properties in Mumbai, Maharashtra"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Properties (Location Filter - Bangalore)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/properties?city=Bangalore&state=Karnataka",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties"],
+							"query": [
+								{"key": "city", "value": "Bangalore"},
+								{"key": "state", "value": "Karnataka"}
+							]
+						},
+						"description": "Get properties in Bangalore, Karnataka"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Properties (Property Type & Features)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/properties?type=Apartment&bedrooms=3&bathrooms=2&furnished=Furnished",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties"],
+							"query": [
+								{"key": "type", "value": "Apartment"},
+								{"key": "bedrooms", "value": "3"},
+								{"key": "bathrooms", "value": "2"},
+								{"key": "furnished", "value": "Furnished"}
+							]
+						},
+						"description": "Get 3BHK furnished apartments"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Properties (Combined Filters)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/properties?page=1&limit=10&type=Apartment&priceMin=10000000&priceMax=15000000&city=Mumbai&state=Maharashtra&bedrooms=3&isVerified=true",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties"],
+							"query": [
+								{"key": "page", "value": "1"},
+								{"key": "limit", "value": "10"},
+								{"key": "type", "value": "Apartment"},
+								{"key": "priceMin", "value": "10000000"},
+								{"key": "priceMax", "value": "15000000"},
+								{"key": "city", "value": "Mumbai"},
+								{"key": "state", "value": "Maharashtra"},
+								{"key": "bedrooms", "value": "3"},
+								{"key": "isVerified", "value": "true"}
+							]
+						},
+						"description": "Get verified 3BHK apartments in Mumbai between 1-1.5 Crore"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Property By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/properties/PROP3001",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties", "PROP3001"]
+						},
+						"description": "Get a single property by ID (e.g., PROP3001)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Property",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzU0MjZhNmQ5MDNmZmE5MTEwYzFjYiIsImlhdCI6MTc0ODQ5MjI3OCwiZXhwIjoxNzUxMDg0Mjc4fQ.AlH3DgMkVyU8JLEvM9xd_o2TEBBs8qZth8X50qxrHKY"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"price\": 13500000,\n  \"bedrooms\": 3,\n  \"isVerified\": true,\n  \"amenities\": [\"Gym\", \"Pool\", \"Power Backup\", \"Security\", \"Club House\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/properties/PROP3001",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties", "PROP3001"]
+						},
+						"description": "Update a property (requires JWT token)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Property",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{"key": "Authorization", "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzU0MjZhNmQ5MDNmZmE5MTEwYzFjYiIsImlhdCI6MTc0ODQ5MjI3OCwiZXhwIjoxNzUxMDg0Mjc4fQ.AlH3DgMkVyU8JLEvM9xd_o2TEBBs8qZth8X50qxrHKY"}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/properties/PROP3001",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties", "PROP3001"]
+						},
+						"description": "Delete a property (requires JWT token)"
+					},
+					"response": []
+				}
+			],
+			"description": "Property CRUD endpoints"
+		},
+		{
+			"name": "Cache Testing",
+			"item": [
+				{
+					"name": "Test Property List Cache",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// First request - should be a cache miss",
+									"if (pm.response.responseTime > 50) {",
+									"    pm.test(\"First request should be a cache miss (slower)\", function () {",
+									"        pm.expect(pm.response.responseTime).to.be.above(50);",
+									"    });",
+									"}",
+									"",
+									"// Store response time for comparison",
+									"pm.environment.set(\"firstRequestTime\", pm.response.responseTime);",
+									"",
+									"// Verify response structure",
+									"pm.test(\"Response should be valid\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.success).to.be.true;",
+									"    pm.expect(response.data).to.be.an('array');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/properties?limit=2",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties"],
+							"query": [
+								{"key": "limit", "value": "2"}
+							]
+						},
+						"description": "First request to test cache miss"
+					}
+				},
+				{
+					"name": "Verify Cache Hit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Second request - should be a cache hit",
+									"const firstRequestTime = Number(pm.environment.get(\"firstRequestTime\"));",
+									"",
+									"pm.test(\"Second request should be faster (cache hit)\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(firstRequestTime);",
+									"});",
+									"",
+									"pm.test(\"Response should match first request\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.success).to.be.true;",
+									"    pm.expect(response.data).to.be.an('array');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/properties?limit=2",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties"],
+							"query": [
+								{"key": "limit", "value": "2"}
+							]
+						},
+						"description": "Second request to verify cache hit"
+					}
+				},
+				{
+					"name": "Test Property Detail Cache",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// First request to property detail - should be cache miss",
+									"if (pm.response.responseTime > 30) {",
+									"    pm.test(\"First detail request should be cache miss\", function () {",
+									"        pm.expect(pm.response.responseTime).to.be.above(30);",
+									"    });",
+									"}",
+									"",
+									"pm.environment.set(\"detailFirstRequestTime\", pm.response.responseTime);",
+									"",
+									"pm.test(\"Property detail response should be valid\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.success).to.be.true;",
+									"    pm.expect(response.data).to.be.an('object');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/properties/PROP2000",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties", "PROP2000"]
+						},
+						"description": "First request to test property detail cache miss"
+					}
+				},
+				{
+					"name": "Verify Property Detail Cache Hit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const detailFirstRequestTime = Number(pm.environment.get(\"detailFirstRequestTime\"));",
+									"",
+									"pm.test(\"Second detail request should be faster (cache hit)\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(detailFirstRequestTime);",
+									"});",
+									"",
+									"pm.test(\"Property detail should match first request\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.success).to.be.true;",
+									"    pm.expect(response.data).to.be.an('object');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/properties/PROP2000",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties", "PROP2000"]
+						},
+						"description": "Second request to verify property detail cache hit"
+					}
+				},
+				{
+					"name": "Test Cache Invalidation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Cache invalidation update should succeed\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.success).to.be.true;",
+									"    pm.expect(response.data).to.be.an('object');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Authorization", "value": "{{authToken}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"price\": 5600000}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/properties/PROP2000",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties", "PROP2000"]
+						},
+						"description": "Update property to test cache invalidation"
+					}
+				},
+				{
+					"name": "Verify Cache Invalidation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// After update, this should be a cache miss",
+									"pm.test(\"Request after update should be cache miss\", function () {",
+									"    const detailFirstRequestTime = Number(pm.environment.get(\"detailFirstRequestTime\"));",
+									"    pm.expect(pm.response.responseTime).to.be.above(detailFirstRequestTime * 0.8);",
+									"});",
+									"",
+									"pm.test(\"Updated property should have new price\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.success).to.be.true;",
+									"    pm.expect(response.data.price).to.equal(5600000);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/properties/PROP2000",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "properties", "PROP2000"]
+						},
+						"description": "Verify cache was invalidated after update"
+					}
+				}
+			],
+			"description": "Tests for Redis caching functionality"
+		},
+		{
+			"name": "Favorites",
+			"item": [
+				{
+					"name": "Add to Favorites",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add to favorites successful\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.success).to.be.true;",
+									"    pm.expect(response.data).to.have.property('property');",
+									"    pm.expect(response.data).to.have.property('user');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Authorization", "value": "{{authToken}}"}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/favorites/PROP2000",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "favorites", "PROP2000"]
+						},
+						"description": "Add a property to user's favorites"
+					}
+				},
+				{
+					"name": "Check Favorite Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check favorite status successful\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.success).to.be.true;",
+									"    pm.expect(response).to.have.property('isFavorited');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Authorization", "value": "{{authToken}}"}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/favorites/PROP2000/check",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "favorites", "PROP2000", "check"]
+						},
+						"description": "Check if a property is in user's favorites"
+					}
+				},
+				{
+					"name": "Get User's Favorites",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get favorites successful\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.success).to.be.true;",
+									"    pm.expect(response.data).to.be.an('array');",
+									"    pm.expect(response).to.have.property('total');",
+									"    pm.expect(response).to.have.property('page');",
+									"    pm.expect(response).to.have.property('pages');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Authorization", "value": "{{authToken}}"}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/favorites?page=1&limit=10",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "favorites"],
+							"query": [
+								{"key": "page", "value": "1"},
+								{"key": "limit", "value": "10"}
+							]
+						},
+						"description": "Get user's favorite properties with pagination"
+					}
+				},
+				{
+					"name": "Remove from Favorites",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Remove from favorites successful\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.success).to.be.true;",
+									"    pm.expect(response.message).to.include('removed from favorites');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{"key": "Authorization", "value": "{{authToken}}"}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/favorites/PROP2000",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "favorites", "PROP2000"]
+						},
+						"description": "Remove a property from user's favorites"
+					}
+				}
+			],
+			"description": "Favorites management endpoints"
+		},
+		{
+			"name": "Recommendations",
+			"item": [
+				{
+					"name": "Search Users by Email",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/recommendations/search-users?email=alice",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "recommendations", "search-users"],
+							"query": [
+								{
+									"key": "email",
+									"value": "alice"
+								}
+							]
+						},
+						"description": "Search for users by email to recommend properties to them"
+					}
+				},
+				{
+					"name": "Send Recommendation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"recipientId\": \"RECIPIENT_ID\",\n    \"propertyId\": \"PROP2000\",\n    \"message\": \"Hey! I found this amazing property that matches your requirements. Check it out!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/recommendations/send",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "recommendations", "send"]
+						},
+						"description": "Send a property recommendation to another user"
+					}
+				},
+				{
+					"name": "Get Received Recommendations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/recommendations/received?page=1&limit=10",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "recommendations", "received"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get a paginated list of recommendations received by the user"
+					}
+				},
+				{
+					"name": "Mark Recommendation as Read",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/recommendations/:recommendationId/read",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "recommendations", ":recommendationId", "read"],
+							"variable": [
+								{
+									"key": "recommendationId",
+									"value": "RECOMMENDATION_ID",
+									"description": "ID of the recommendation to mark as read"
+								}
+							]
+						},
+						"description": "Mark a received recommendation as read"
+					}
+				}
+			],
+			"description": "Endpoints for property recommendations between users"
+		}
+	]
+} 
