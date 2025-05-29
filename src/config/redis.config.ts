@@ -15,10 +15,7 @@ export const CACHE_KEYS = {
 };
 
 // Create Redis client
-const redisClient = new Redis({
-  host: process.env.REDIS_HOST || 'localhost',
-  port: Number(process.env.REDIS_PORT) || 6379,
-  password: process.env.REDIS_PASSWORD,
+const redisClient = new Redis(process.env.REDIS_URL || 'redis://localhost:6379', {
   retryStrategy: (times: number) => {
     // Retry connection every 5 seconds for 5 times
     if (times <= 5) {
